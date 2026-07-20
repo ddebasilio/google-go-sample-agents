@@ -1,0 +1,16 @@
+{
+  "dependencies": {
+    "@google/genai": "^2.8.0"
+  },
+  "name": "managed-agent",
+  "version": "1.0.0",
+  "description": "",
+  "main": "agent.ts",
+  "scripts": {
+    "start": "node --env-file=.env --experimental-strip-types agent.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module"
+}

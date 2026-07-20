@@ -1,0 +1,14 @@
+{
+  "name": "routing-agent",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "npx adk run agent.ts",
+    "web": "npx adk web agent.ts"
+  },
+  "dependencies": {
+    "@google/adk": "^1.1.0",
+    "@google/adk-devtools": "^1.1.0",
+    "zod": "^4.4.3"
+  }
+}

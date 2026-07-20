@@ -1,0 +1,19 @@
+{
+  "dependencies": {
+    "@google/adk": "^1.1.0",
+    "@google/adk-devtools": "^1.1.0",
+    "zod": "^4.4.3"
+  },
+  "name": "loop-agent",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "npx adk run agent.ts",
+    "web": "npx adk web agent.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module"
+}
