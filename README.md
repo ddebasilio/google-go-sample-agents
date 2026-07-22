@@ -22,16 +22,16 @@ Download and run the installer from the official website:
 
 ---
 
-### 2. Pull the `gemma4:12b` Model
+### 2. Pull the `gemma4:e4b` Model
 
 Once Ollama is installed, make sure the Ollama service is running:
 ```bash
 ollama serve
 ```
 
-In a new terminal window, pull the `gemma4:12b` model:
+In a new terminal window, pull the `gemma4:e4b` model:
 ```bash
-ollama pull gemma4:12b
+ollama pull gemma4:e4b
 ```
 
 Verify that the model is installed:
