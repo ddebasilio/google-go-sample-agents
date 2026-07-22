@@ -52,7 +52,7 @@ func main() {
 
 	modelName := os.Getenv("OLLAMA_MODEL")
 	if modelName == "" {
-		modelName = "gemma4:12b"
+		modelName = "gemma4:e4b"
 	}
 	model := newOllamaModel(modelName)
 

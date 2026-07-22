@@ -9,6 +9,7 @@ import (
 	"iter"
 	"net/http"
 	"os"
+	"strings"
 
 	"google.golang.org/adk/model"
 	"google.golang.org/genai"
@@ -53,15 +54,57 @@ type openAIToolCall struct {
 	} `json:"function"`
 }
 
+type openAIFunction struct {
+	Name        string         `json:"name"`
+	Description string         `json:"description,omitempty"`
+	Parameters  map[string]any `json:"parameters,omitempty"`
+}
+
+type openAITool struct {
+	Type     string         `json:"type"`
+	Function openAIFunction `json:"function"`
+}
+
 type openAIChatReq struct {
 	Model    string          `json:"model"`
 	Messages []openAIMessage `json:"messages"`
+	Tools    []openAITool    `json:"tools,omitempty"`
 }
 
 type openAIChatResp struct {
 	Choices []struct {
 		Message openAIMessage `json:"message"`
 	} `json:"choices"`
+}
+
+func cleanSchema(s *genai.Schema) map[string]any {
+	if s == nil {
+		return nil
+	}
+	m := make(map[string]any)
+	if s.Type != "" {
+		m["type"] = strings.ToLower(string(s.Type))
+	}
+	if s.Description != "" {
+		m["description"] = s.Description
+	}
+	if len(s.Required) > 0 {
+		m["required"] = s.Required
+	}
+	if len(s.Enum) > 0 {
+		m["enum"] = s.Enum
+	}
+	if s.Properties != nil {
+		props := make(map[string]any)
+		for k, v := range s.Properties {
+			props[k] = cleanSchema(v)
+		}
+		m["properties"] = props
+	}
+	if s.Items != nil {
+		m["items"] = cleanSchema(s.Items)
+	}
+	return m
 }
 
 func (m *OllamaModel) GenerateContent(ctx context.Context, req *model.LLMRequest, stream bool) iter.Seq2[*model.LLMResponse, error] {
@@ -137,6 +180,21 @@ func (m *OllamaModel) GenerateContent(ctx context.Context, req *model.LLMRequest
 			Messages: messages,
 		}
 
+		if req.Config != nil {
+			for _, t := range req.Config.Tools {
+				for _, fd := range t.FunctionDeclarations {
+					payload.Tools = append(payload.Tools, openAITool{
+						Type: "function",
+						Function: openAIFunction{
+							Name:        fd.Name,
+							Description: fd.Description,
+							Parameters:  cleanSchema(fd.Parameters),
+						},
+					})
+				}
+			}
+		}
+
 		bodyBytes, err := json.Marshal(payload)
 		if err != nil {
 			yield(nil, err)
@@ -203,3 +261,4 @@ func (m *OllamaModel) GenerateContent(ctx context.Context, req *model.LLMRequest
 		yield(res, nil)
 	}
 }
+

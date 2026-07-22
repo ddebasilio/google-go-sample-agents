@@ -29,7 +29,7 @@ type SwapiResults struct {
 }
 
 func swapiPeople(ctx agent.ToolContext, args SwapiArgs) (SwapiResults, error) {
-	resp, err := http.Get("https://swapi.infapio/api/people")
+	resp, err := http.Get("https://swapi.info/api/people")
 	if err != nil {
 		return SwapiResults{}, fmt.Errorf("SWAPI request failed: %w", err)
 	}
@@ -60,7 +60,7 @@ func main() {
 
 	modelName := os.Getenv("OLLAMA_MODEL")
 	if modelName == "" {
-		modelName = "gemma4:12b"
+		modelName = "gemma4:e4b"
 	}
 	model := newOllamaModel(modelName)
 

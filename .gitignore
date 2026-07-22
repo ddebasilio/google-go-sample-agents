@@ -143,3 +143,13 @@ vite.config.ts.timestamp-*
 .vite/
 .DS_Store
 .claude/
+
+agent-as-tool/agent-as-tool
+coordinator/coordinator
+loop-agent/loop-agent
+managed-agent/managed-agent
+managed-agent/ollama.go
+parallel-agent/parallel-agent
+routing-agent/routing-agent
+sequential-agent/sequential-agent
+single-agent/single-agent
